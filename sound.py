@@ -8,6 +8,7 @@ class sound_sensor:
         self.count = 0
         self.limit = limit
         self.value_list = []
+        self.max_value = 0
         
     def check_loudness(self):
         value = self.pin.read_u16()
@@ -24,6 +25,7 @@ class sound_sensor:
     def detect_loud(self, thresh):
         check = False
         max_value = self.check_loudness()
+        self.max_value = max_value
         if max_value > thresh:
             check = True
         

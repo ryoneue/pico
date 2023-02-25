@@ -41,7 +41,7 @@ class LCD():
         sleep(0.001)
         
     def show(self, string, row=1, skip=0):
-        self.i2c.writeto_mem(self._ST7032, self._SETTING, self.command["disp_clear"])
+#         self.i2c.writeto_mem(self._ST7032, self._SETTING, self.command["disp_clear"])
         sleep(0.001)
         self.i2c.writeto_mem(self._ST7032, self._SETTING, self.command["reset_cursor"])
         sleep(0.001)
@@ -73,21 +73,26 @@ class LCD():
         sleep(0.0001)
         self.i2c.writeto_mem(self._ST7032, self._SETTING, self.command["disp_clear"])
 
-lcd = LCD(i2c=0,scl=Pin(17),sda=Pin(16))
-sleep(0.001)
+if __name__ == '__main__':
+    lcd = LCD(i2c=0,scl=Pin(17),sda=Pin(16))
+    sleep(0.001)
 
-sound = sound_sensor(adc_pin=0, limit=1000)
-#display temp data
-i = 0
-while 1:
-    lcd.clear()
-    if sound.detect_loud(thresh=10000):
-#         if i == 0:
-        lcd.show("OK!oK!", row=1, skip=0)
-        sleep(1)
-#         lcd.shift(1)    
-#         i2c.writeto_mem(0x3e, 0x00, b'\x18')
-#         i = abs(i - 1)
-#     sleep(1)
+    sound = sound_sensor(adc_pin=0, limit=10000)
+    #display temp data
+    i = 0
+    while 1:
+        lcd.clear()
+        
+        if sound.detect_loud(thresh=10000):
+    #         if i == 0:
+            lcd.show("loudness=", row=1, skip=0)
+            sleep(0.001)
+            
+            lcd.show("{}".format(sound.max_value), row=2)
+            sleep(1)
+    #         lcd.shift(1)    
+    #         i2c.writeto_mem(0x3e, 0x00, b'\x18')
+    #         i = abs(i - 1)
+    #     sleep(1)
     
     
